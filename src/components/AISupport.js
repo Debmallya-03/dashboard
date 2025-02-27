@@ -49,7 +49,7 @@ const AISupport = () => {
             { text: "Stock Market Insights", route: "/stock-insights" },
             { text: "AI-Powered Predictions", route: "/ai-predictions" },
             { text: "Portfolio Analysis", route: "/portfolio-analysis" },
-            { text: "Chat with AI", route: "/chat-ai" },
+            { text: "Chat with Nova", route: "/chat-ai" },
           ].map((btn, index) => (
             <Button
               key={index}

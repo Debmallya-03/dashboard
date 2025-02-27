@@ -1,11 +1,6 @@
 import React, { useState, useContext } from "react";
-
-// import axios from "axios";
-
 import GeneralContext from "./GeneralContext";
-
 import { Tooltip } from "@mui/material";
-
 import {
   BarChartOutlined,
   KeyboardArrowDown,
@@ -47,19 +42,19 @@ const WatchList = () => {
   };
 
   return (
-    <div className="watchlist-container">
-      <div className="search-container">
+    <div style={styles.container}>
+      <div style={styles.searchContainer}>
         <input
           type="text"
           name="search"
           id="search"
           placeholder="Search eg:infy, bse, nifty fut weekly, gold mcx"
-          className="search"
+          style={styles.search}
         />
-        <span className="counts"> {watchlist.length} / 50</span>
+        <span style={styles.counts}>{watchlist.length} / 50</span>
       </div>
 
-      <ul className="list">
+      <ul style={styles.list}>
         {watchlist.map((stock, index) => {
           return <WatchListItem stock={stock} key={index} />;
         })}
@@ -75,26 +70,30 @@ export default WatchList;
 const WatchListItem = ({ stock }) => {
   const [showWatchlistActions, setShowWatchlistActions] = useState(false);
 
-  const handleMouseEnter = (e) => {
+  const handleMouseEnter = () => {
     setShowWatchlistActions(true);
   };
 
-  const handleMouseLeave = (e) => {
+  const handleMouseLeave = () => {
     setShowWatchlistActions(false);
   };
 
   return (
-    <li onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
-      <div className="item">
-        <p className={stock.isDown ? "down" : "up"}>{stock.name}</p>
-        <div className="itemInfo">
-          <span className="percent">{stock.percent}</span>
+    <li
+      style={styles.watchlistItem}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
+      <div style={styles.item}>
+        <p style={stock.isDown ? styles.down : styles.up}>{stock.name}</p>
+        <div style={styles.itemInfo}>
+          <span style={styles.percent}>{stock.percent}</span>
           {stock.isDown ? (
-            <KeyboardArrowDown className="down" />
+            <KeyboardArrowDown style={styles.down} />
           ) : (
-            <KeyboardArrowUp className="down" />
+            <KeyboardArrowUp style={styles.up} />
           )}
-          <span className="price">{stock.price}</span>
+          <span style={styles.price}>{stock.price}</span>
         </div>
       </div>
       {showWatchlistActions && <WatchListActions uid={stock.name} />}
@@ -110,25 +109,135 @@ const WatchListActions = ({ uid }) => {
   };
 
   return (
-    <span className="actions">
-      <span>
-        <Tooltip title="Buy (B)" placement="top" arrow slots={{ transition: "Fade" }} onClick={handleBuyClick}>
-          <button className="buy">Buy</button>
-        </Tooltip>
-        <Tooltip title="Sell (S)" placement="top" arrow slots={{ transition: "Fade" }}>
-          <button className="sell">Sell</button>
-        </Tooltip>
-        <Tooltip title="Analytics (A)" placement="top" arrow slots={{ transition: "Fade" }}>
-          <button className="action">
-            <BarChartOutlined className="icon" />
-          </button>
-        </Tooltip>
-        <Tooltip title="More" placement="top" arrow slots={{ transition: "Fade" }}>
-          <button className="action">
-            <MoreHoriz className="icon" />
-          </button>
-        </Tooltip>
-      </span>
+    <span style={styles.actions}>
+      <Tooltip title="Buy (B)" placement="top" arrow>
+        <button style={styles.buy} onClick={handleBuyClick}>
+          Buy
+        </button>
+      </Tooltip>
+      <Tooltip title="Sell (S)" placement="top" arrow>
+        <button style={styles.sell}>Sell</button>
+      </Tooltip>
+      <Tooltip title="Analytics (A)" placement="top" arrow>
+        <button style={styles.action}>
+          <BarChartOutlined style={styles.icon} />
+        </button>
+      </Tooltip>
+      <Tooltip title="More" placement="top" arrow>
+        <button style={styles.action}>
+          <MoreHoriz style={styles.icon} />
+        </button>
+      </Tooltip>
     </span>
   );
 };
+
+// Inline Styles Object
+const styles = {
+  container: {
+    backgroundColor: "#121212",
+    color: "#ffffff",
+    padding: "20px",
+    borderRadius: "8px",
+    width: "80%",
+    maxWidth: "500px",
+    margin: "auto",
+    height: "80vh", // Set a fixed height
+    overflowY: "auto", // Make it scrollable independently
+  },
+  searchContainer: {
+    display: "flex",
+    alignItems: "center",
+    backgroundColor: "#1e1e1e",
+    padding: "10px",
+    borderRadius: "5px",
+    marginBottom: "10px",
+  },
+  search: {
+    background: "transparent",
+    border: "none",
+    color: "#ffffff",
+    width: "100%",
+    padding: "8px",
+    outline: "none",
+  },
+  counts: {
+    color: "#aaaaaa",
+    marginLeft: "10px",
+  },
+  list: {
+    listStyle: "none",
+    padding: "0",
+  },
+  watchlistItem: {
+    display: "flex",
+  justifyContent: "space-between",
+  alignItems: "center",
+  backgroundColor: "#1e1e1e",
+  padding: "8px", // Reduce padding (was 12px)
+  margin: "5px 0", // Reduce margin (was 8px)
+  borderRadius: "6px",
+  transition: "background 0.3s",
+  cursor: "pointer",
+  height: "40px", // Set a fixed height if needed
+  },
+  item: {
+    display: "flex",
+    justifyContent: "space-between",
+    width: "100%",
+  },
+  itemInfo: {
+    display: "flex",
+    alignItems: "center",
+  },
+  percent: {
+    fontWeight: "bold",
+    marginRight: "8px",
+  },
+  price: {
+    marginLeft: "10px",
+  },
+  up: {
+    color: "#4caf50", // Green for positive values
+    fontWeight: "bold",
+  },
+  down: {
+    color: "#ff5252", // Red for negative values
+    fontWeight: "bold",
+  },
+  actions: {
+    display: "flex",
+    gap: "10px",
+  },
+  buy: {
+    backgroundColor: "#4caf50",
+    color: "white",
+    padding: "6px 12px",
+    border: "none",
+    borderRadius: "5px",
+    cursor: "pointer",
+    transition: "0.3s",
+  },
+  sell: {
+    backgroundColor: "#ff5252",
+    color: "white",
+    padding: "6px 12px",
+    border: "none",
+    borderRadius: "5px",
+    cursor: "pointer",
+    transition: "0.3s",
+  },
+  action: {
+    backgroundColor: "#333333",
+    color: "white",
+    padding: "6px 12px",
+    border: "none",
+    borderRadius: "5px",
+    cursor: "pointer",
+    transition: "0.3s",
+  },
+  icon: {
+    color: "white",
+  },
+};
+
